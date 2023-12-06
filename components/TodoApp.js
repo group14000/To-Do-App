@@ -1,10 +1,17 @@
 "use client";
-// pages/index.js
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const TodoApp = () => {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    return storedTasks;
+  });
   const [newTask, setNewTask] = useState("");
+
+  // Save tasks to localStorage whenever tasks are updated
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   const addTask = () => {
     if (newTask.trim() !== "") {
