@@ -7,6 +7,8 @@ const TodoApp = () => {
     return storedTasks;
   });
   const [newTask, setNewTask] = useState("");
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [editingText, setEditingText] = useState("");
 
   // Save tasks to localStorage whenever tasks are updated
   useEffect(() => {
@@ -30,6 +32,27 @@ const TodoApp = () => {
         task.id === taskId ? { ...task, completed: !task.completed } : task
       )
     );
+  };
+
+  const editTask = (taskId) => {
+    setEditingTaskId(taskId);
+    const taskToEdit = tasks.find((task) => task.id === taskId);
+    setEditingText(taskToEdit.text);
+  };
+
+  const saveEdit = () => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === editingTaskId ? { ...task, text: editingText } : task
+      )
+    );
+    setEditingTaskId(null);
+    setEditingText("");
+  };
+
+  const cancelEdit = () => {
+    setEditingTaskId(null);
+    setEditingText("");
   };
 
   const markComplete = () => {
@@ -75,16 +98,40 @@ const TodoApp = () => {
                 onChange={() => toggleCompletion(task.id)}
                 className="mr-2"
               />
-              <span className={task.completed ? "line-through" : ""}>
-                {task.text}
-              </span>
+              {editingTaskId === task.id ? (
+                <input
+                  type="text"
+                  value={editingText}
+                  onChange={(e) => setEditingText(e.target.value)}
+                />
+              ) : (
+                <span className={task.completed ? "line-through" : ""}>
+                  {task.text}
+                </span>
+              )}
             </div>
-            <button
-              onClick={() => removeTask(task.id)}
-              className="text-red-500"
-            >
-              Remove
-            </button>
+            <div>
+              {editingTaskId === task.id ? (
+                <>
+                  <button onClick={saveEdit} className="text-green-500 mr-2">
+                    Save
+                  </button>
+                  <button onClick={cancelEdit} className="text-red-500">
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <button onClick={() => editTask(task.id)} className="mr-2">
+                  Edit
+                </button>
+              )}
+              <button
+                onClick={() => removeTask(task.id)}
+                className="text-red-500"
+              >
+                Remove
+              </button>
+            </div>
           </li>
         ))}
       </ul>
