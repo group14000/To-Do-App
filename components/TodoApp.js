@@ -32,6 +32,14 @@ const TodoApp = () => {
     );
   };
 
+  const markComplete = () => {
+    setTasks(tasks.map((task) => ({ ...task, completed: true })));
+  };
+
+  const markIncomplete = () => {
+    setTasks(tasks.map((task) => ({ ...task, completed: false })));
+  };
+
   return (
     <div className="container mx-auto p-4 max-w-md">
       <h1 className="text-3xl font-bold mb-4 text-center">To-Do List</h1>
@@ -80,6 +88,21 @@ const TodoApp = () => {
           </li>
         ))}
       </ul>
+
+      <div className="mt-4">
+        <button
+          onClick={markComplete}
+          className="bg-green-500 text-white p-2 rounded mr-2"
+        >
+          Mark Complete
+        </button>
+        <button
+          onClick={markIncomplete}
+          className="bg-yellow-500 text-white p-2 rounded"
+        >
+          Mark Incomplete
+        </button>
+      </div>
     </div>
   );
 };
