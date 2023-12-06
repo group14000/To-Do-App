@@ -1,23 +1,11 @@
-"use client";
-import Navbar from "@/components/navbar/Navbar";
-import TaskManager from "@/components/taskManager/TaskManager";
-import { useState } from 'react';
+import TodoApp from "@/components/TodoApp";
 
 export default function Home() {
-  const [showCompleted, setShowCompleted] = useState(false);
-
-  const handleShowCompleted = () => {
-    setShowCompleted(true);
-  };
-
-  const handleShowPending = () => {
-    setShowCompleted(false);
-  };
-
   return (
-    <>
-      <Navbar onShowCompleted={handleShowCompleted} onShowPending={handleShowPending} />
-      <TaskManager showCompleted={showCompleted} />
-    </>
+    <div className="bg-gray-100 min-h-screen flex items-center justify-center">
+      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <TodoApp />
+      </div>
+    </div>
   );
 }
